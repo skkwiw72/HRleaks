@@ -1,12 +1,150 @@
-<!-- core/templates/core/landing.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Bienvenido</title>
+  <meta charset="UTF-8">
+  <title>HRLeaks - Foro Anónimo Laboral</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f7f9fc;
+      color: #333;
+    }
+
+    header {
+      background-color: #2b5876;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .form-section textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      resize: vertical;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .form-section button {
+      background-color: #2b5876;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .form-section button:hover {
+      background-color: #1d3f55;
+    }
+
+    .post {
+      background-color: #f0f4f8;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border-left: 4px solid #2b5876;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Bienvenido a nuestra plataforma</h1>
-    <p>Esta es una landing page básica en Django.</p>
+
+  <header>
+    <h1>HRLeaks - Foro Anónimo de Experiencias Laborales</h1>
+    <p>Comparte tus experiencias con jefes o empresas de forma segura y anónima.</p>
+  </header>
+
+  <div class="container">
+    <section class="form-section">
+      <h2>Publica tu experiencia</h2>
+      <textarea id="postContent" rows="5" placeholder="Comparte tu historia anónimamente..."></textarea>
+      <button onclick="publishPost()">Publicar</button>
+    </section>
+
+    <section class="post-list" id="postList">
+      <h2>Publicaciones recientes</h2>
+      <!-- Aquí se insertan los posts -->
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 HRLeaks. Plataforma segura y anónima.
+  </footer>
+
+  <script>
+    function publishPost() {
+      const content = document.getElementById('postContent').value.trim();
+      if (!content) {
+        alert("Por favor, escribe algo antes de publicar.");
+        return;
+      }
+
+      const post = {
+        text: content,
+        date: new Date().toLocaleString()
+      };
+
+      let posts = JSON.parse(localStorage.getItem('posts')) || [];
+      posts.unshift(post);  // Añadir al inicio
+      localStorage.setItem('posts', JSON.stringify(posts));
+      document.getElementById('postContent').value = '';
+      renderPosts();
+    }
+
+    function renderPosts() {
+      const postList = document.getElementById('postList');
+      let posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+      let html = '';
+      posts.forEach(post => {
+        html += `
+          <div class="post">
+            <div>${post.text}</div>
+            <small style="display:block; margin-top:10px; color: #888;">${post.date}</small>
+          </div>
+        `;
+      });
+
+      postList.innerHTML = '<h2>Publicaciones recientes</h2>' + html;
+    }
+
+    window.onload = renderPosts;
+  </script>
+
 </body>
 </html>
+s
